@@ -13,7 +13,7 @@ function showPrice(id, price) {
 
     setTimeout(function () {
 	chrome.notifications.clear(notificationId, function() {});
-    }, 1000);
+    }, 1000 * 3);
 }
 
 var apiUrl = 'http://hq.sinajs.cn/list=',
