@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "系统消息",
+    "version": "1",
+    "description": "初始化版本",
+    "icons": {
+	"16": "16.png",
+	"32": "32.png",
+	"128": "128.png"
+    },
+    "permissions": [
+	"tabs",
+	"notifications",
+	"http://hq.sinajs.cn/"],
+    "background": {
+	"page": "start.html"
+    },
+    "web_accessible_resources": [
+
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
