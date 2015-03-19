@@ -1,39 +1,47 @@
-/**
- * 显示系统消息
- */
-function showPrice(id, price) {
+//配置基本信息
+var stockId = 'sz002024';
+
+//配置显示
+var showPeriodTime = 60,
+    showTime = 5;
+//配置数据源
+var apiUrl = 'http://hq.sinajs.cn/list=';
+
+function showNotice (title, content) {
     var notificationId = String(Date.now());
 
     chrome.notifications.create(notificationId, {
 	type: 'basic',
-	iconUrl: '32.png',
-	title: String(id),
-	message: String(price)
+	iconUrl: '48.png',
+	title: title,
+	message: content
     }, function () {});
 
     setTimeout(function () {
 	chrome.notifications.clear(notificationId, function() {});
-    }, 1000 * 3);
+    }, 1000 * showTime);
 }
 
-var apiUrl = 'http://hq.sinajs.cn/list=',
-    stockId = 'sz002024';
-
-$(document).ready(function () {
+function getCurrentPrice (stockId, callback) {
     $.ajax({
 	type: 'GET',
 	url: apiUrl + stockId,
 	success: function (data, status) {
-	    if(chrome.notifications) {
-		var id = '002024',
-		    price = 10;
-
-		setInterval(function() {
-		    showPrice(stockId, data.split(',')[3]);
-		}, 1000 * 10);
-	    }
+	    callback(null, data.split(',')[3]);
 	}
     });
+}
+
+$(document).ready(function () {
+    setInterval(function () {
+	getCurrentPrice(stockId, function (err, price) {
+	    if (err) {
+		showNotice('遇到错误', '...');
+	    } else {
+		showNotice(String(stockId), String(price));
+	    }
+	});
+    }, 1000 * showPeriodTime);
 });
 
 
